@@ -15,5 +15,13 @@ if __name__ == "__main__":
             case "exit":
                 print("Dont worry, your tasks saved local. Goodbye!")
                 exit()
+            case "ping":
+                try:
+                    with db_cursor() as cur:
+                        cur.execute("SELECT 1;")
+                        res = cur.fetchone()
+                        print(f"Database is up.")
+                except Exception as e:
+                        print(f"Database is down: {e}")
             case _:
                 print("Unknown command")
