@@ -18,7 +18,7 @@ def connect() :
     )
 
 @contextmanager
-def database_cursor() -> cursor:
+def db_cursor() -> cursor:
     """
     Giving cursor inside of transaction
     - commit if everything is good

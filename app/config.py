@@ -19,7 +19,7 @@ def load_config() -> dict:
     return {
         "host": need("DB_HOST"),
         "port": int(need("DB_PORT")),
-        "db_name": need("DB_NAME"),
+        "dbname": need("DB_NAME"),
         "user": need("DB_USER"),
         "password": need("DB_PASSWORD"),
     }
