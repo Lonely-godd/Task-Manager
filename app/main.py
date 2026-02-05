@@ -10,6 +10,15 @@ if __name__ == "__main__":
             continue
 
         match request:
+            case "reset":
+                response = input("Do you really wish to reset the database? (y/n) ")
+                if response in ("y", "Y"):
+                    from app.services.reset_db import reset_tables
+                    reset_tables()
+                    print("Database reset")
+                elif response in ("n", "N"):
+                    print("Good choice!")
+                    continue
             case "init":
                 try:
                     from app.services.init_db import apply_schema
@@ -29,6 +38,6 @@ if __name__ == "__main__":
                         res = cur.fetchone()
                         print(f"Database is up.")
                 except Exception as e:
-                        print(f"Database is down: {e}")
+                    print(f"Database is down: {e}")
             case _:
                 print("Unknown command")
