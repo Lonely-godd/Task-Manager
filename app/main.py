@@ -10,6 +10,13 @@ if __name__ == "__main__":
             continue
 
         match request:
+            case "init":
+                try:
+                    from app.services.init_db import apply_schema
+                    apply_schema()
+                    print("OK: schema applied")
+                except Exception as e:
+                    print(f"Error: {e}")
             case "help":
                 print("Some help")
             case "exit":
