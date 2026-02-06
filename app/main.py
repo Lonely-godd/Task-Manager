@@ -10,6 +10,16 @@ if __name__ == "__main__":
             continue
 
         match request:
+            case "add":
+                continue
+            case "update":
+                continue
+            case "delete":
+                continue
+            case "list":
+                continue
+            case "set_priority":
+                continue
             case "reset":
                 response = input("Do you really wish to reset the database? (y/n) ")
                 if response in ("y", "Y"):
