@@ -1,32 +1,34 @@
 from app.db import db_cursor
-from cli_parser import parse_line
+from app.cli_parser import parse_line
 
-HELP_COMMANDS = ["reset", "init", "help", "exit", "ping"]
+HELP_COMMANDS = {"reset", "init", "help", "exit", "ping"}
 
 if __name__ == "__main__":
-    print("Hello there! This is TaskManager, your interactive console program for controlling your tasks.\n"
-          "For commands info text 'help'.\n")
+    print(
+        "Hello there! This is TaskManager, your interactive console program for controlling your tasks.\n"
+        "For commands info text 'help'.\n"
+    )
+
     while True:
-        request = input(f"What would you like to do? ").strip()
+        request = input("What would you like to do? ").strip()
         if not request:
             continue
+
         cmd, payload = parse_line(request)
+
         if request in HELP_COMMANDS:
             match request:
                 case "reset":
                     response = input("Do you really wish to reset the database? (y/n) ")
                     if response in ("y", "Y"):
                         from app.services.reset_db import reset_tables
-
                         reset_tables()
                         print("Database reset")
-                    elif response in ("n", "N"):
+                    else:
                         print("Good choice!")
-                        continue
                 case "init":
                     try:
                         from app.services.init_db import apply_schema
-
                         apply_schema()
                         print("OK: schema applied")
                     except Exception as e:
@@ -35,20 +37,21 @@ if __name__ == "__main__":
                     print("Some help")
                 case "exit":
                     print("Dont worry, your tasks saved local. Goodbye!")
-                    exit()
+                    raise SystemExit
                 case "ping":
                     try:
                         with db_cursor() as cur:
                             cur.execute("SELECT 1;")
-                            res = cur.fetchone()
-                            print(f"Database is up.")
+                        print("Database is up.")
                     except Exception as e:
                         print(f"Database is down: {e}")
-                case _:
-                    print("Unknown command")
         else:
             match cmd:
                 case "add" | "update" | "list":
                     print(cmd, payload)
+                case "unknown":
+                    print("Unknown command:", payload.get("raw"))
                 case "error":
                     print("Parse error:", payload.get("message"))
+                case _:
+                    print("Unhandled command:", cmd, payload)
