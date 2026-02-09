@@ -47,7 +47,14 @@ if __name__ == "__main__":
                         print(f"Database is down: {e}")
         else:
             match cmd:
-                case "add" | "update" | "list":
+                case "add":
+                    try:
+                        from app.services.tasks import create_task
+                        task_id = create_task(payload)
+                        print(f"Created task with id: {task_id}")
+                    except Exception as e:
+                        print(f"Error: {e}")
+                case "update" | "list":
                     print(cmd, payload)
                 case "unknown":
                     print("Unknown command:", payload.get("raw"))
