@@ -120,7 +120,7 @@ def parse_list_args(args: list[str]) -> Payload:
       list -> {"filter": "all"}
       list open -> {"filter": "open"}
     """
-    flt = (args[0].lower() if args else "all")
+    flt = (args[0].lower() if args else "open")
     return {"filter": flt}
 
 
