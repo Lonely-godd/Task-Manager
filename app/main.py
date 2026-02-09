@@ -54,7 +54,14 @@ if __name__ == "__main__":
                         print(f"Created task with id: {task_id}")
                     except Exception as e:
                         print(f"Error: {e}")
-                case "update" | "list":
+                case "list":
+                    try:
+                        from app.services.tasks import get_task
+                        tasks = get_task(payload)
+                        print(tasks)
+                    except Exception as e:
+                        print(f"Error: {e}")
+                case "update":
                     print(cmd, payload)
                 case "unknown":
                     print("Unknown command:", payload.get("raw"))
