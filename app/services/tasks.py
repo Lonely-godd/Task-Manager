@@ -1,7 +1,7 @@
 from prompt_toolkit.validation import ValidationError
 
 from app.repo.tasks import insert_task
-
+from app.repo.tasks import select_task
 
 def create_task(payload: dict) -> int:
     title = payload.get('title')
@@ -21,3 +21,8 @@ def create_task(payload: dict) -> int:
         priority = priority,
         due_date = due_date,
     )
+
+def get_task(payload: dict):
+    status = payload.get('filter')
+
+    return select_task(status)
