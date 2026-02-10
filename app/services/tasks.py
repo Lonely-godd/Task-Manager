@@ -24,5 +24,8 @@ def create_task(payload: dict) -> int:
 
 def get_task(payload: dict):
     status = payload.get('filter')
-
+    if status is None:
+        return select_task()
+    if status not in ("open", "done", "archived"):
+        raise ValueError("Unknown status filter")
     return select_task(status)

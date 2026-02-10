@@ -22,6 +22,7 @@ if __name__ == "__main__":
                     response = input("Do you really wish to reset the database? (y/n) ")
                     if response in ("y", "Y"):
                         from app.services.reset_db import reset_tables
+
                         reset_tables()
                         print("Database reset")
                     else:
@@ -29,6 +30,7 @@ if __name__ == "__main__":
                 case "init":
                     try:
                         from app.services.init_db import apply_schema
+
                         apply_schema()
                         print("OK: schema applied")
                     except Exception as e:
@@ -50,6 +52,7 @@ if __name__ == "__main__":
                 case "add":
                     try:
                         from app.services.tasks import create_task
+
                         task_id = create_task(payload)
                         print(f"Created task with id: {task_id}")
                     except Exception as e:
@@ -57,6 +60,7 @@ if __name__ == "__main__":
                 case "list":
                     try:
                         from app.services.tasks import get_task
+
                         tasks = get_task(payload)
                         print(tasks)
                     except Exception as e:
