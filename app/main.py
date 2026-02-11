@@ -62,7 +62,8 @@ if __name__ == "__main__":
                         from app.services.tasks import get_task
 
                         tasks = get_task(payload)
-                        print(tasks)
+                        for t in tasks:
+                            print(t)
                     except Exception as e:
                         print(f"Error: {e}")
                 case "update":
