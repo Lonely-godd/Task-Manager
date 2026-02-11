@@ -67,7 +67,13 @@ if __name__ == "__main__":
                     except Exception as e:
                         print(f"Error: {e}")
                 case "update":
-                    print(cmd, payload)
+                    try:
+                        from app.services.tasks import update_task
+
+                        task_id = update_task(payload)
+                        print(f"Updated task with id: {task_id}")
+                    except Exception as e:
+                        print(f"Error: {e}")
                 case "unknown":
                     print("Unknown command:", payload.get("raw"))
                 case "error":

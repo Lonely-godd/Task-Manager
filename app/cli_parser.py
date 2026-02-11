@@ -120,7 +120,7 @@ def parse_list_args(args: list[str]) -> Payload:
       list -> {"filter": "all"}
       list open -> {"filter": "open"}
     """
-    flt = (args[0].lower() if args else "open")
+    flt = (args[0].lower() if args else None)
     return {"filter": flt}
 
 
@@ -130,10 +130,44 @@ def parse_update_args(args: list[str]) -> Payload:
     """
     Later:
       update <id> title "..." desc "..." priority 2 due 2026-02-10 status done
-    For now:
-      keep raw args
     """
-    return {"raw_args": args}
+    if not args:
+        return {"id": None}  # later: raise error
+
+    payload: Payload = {
+        "id": args[0],
+    }
+
+    i = 1
+    while i < len(args):
+        key = args[i].lower()
+
+        # if user accidentally typed a stray word at the end, just stop
+        if i + 1 >= len(args):
+            payload.setdefault("_unknown", []).append(args[i])
+            break
+
+        val = args[i + 1]
+
+        if key in ("desc", "description"):
+            payload["description"] = val
+            i += 2
+        elif key == "priority":
+            # minimal parse (can raise ValueError - caught by parse_line)
+            payload["priority"] = int(val)
+            i += 2
+        elif key in ("due", "due_date"):
+            payload["due_date"] = val
+            i += 2
+        elif key == "status":
+            payload["status"] = val
+            i += 2
+        else:
+            # unknown tokens -> keep for debugging; later we’ll validate
+            payload.setdefault("_unknown", []).append(args[i])
+            i += 1
+
+    return payload
 
 
 def parse_set_priority_args(args: list[str]) -> Payload:
