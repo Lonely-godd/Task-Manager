@@ -7,7 +7,7 @@ def create_task(payload: dict) -> int:
     title = payload.get('title')
     priority = payload.get('priority')
     due_date = payload.get('due_date')
-
+    description = payload.get('description')
     if not title or not title.strip():
         raise ValueError("Task title cannot be empty")
 
@@ -18,6 +18,7 @@ def create_task(payload: dict) -> int:
             raise ValueError("Priority must be between 1 and 5")
     return insert_task(
         title = title.strip(),
+        description = description,
         priority = priority,
         due_date = due_date,
     )
