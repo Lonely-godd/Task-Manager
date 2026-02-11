@@ -26,7 +26,7 @@ def insert_task(
 
 
 def select_task(
-        status: int | None,
+        status: str | None,
 ):
     if status is None:
         query = """
@@ -47,3 +47,29 @@ def select_task(
         cur.execute(query, params)
         tasks = cur.fetchall()
     return tasks
+
+
+def repo_update_task(
+        task_id: str,
+        description: str | None = None,
+        status: str | None = None,
+        priority: int | None = None,
+        due_date: str | None = None,
+) -> str:
+    query = """
+            UPDATE tasks
+            SET description = COALESCE(%s, description),
+                status      = COALESCE(%s, status),
+                priority    = COALESCE(%s, priority),
+                due_date    = COALESCE(%s, due_date),
+                updated_at  = NOW()
+            WHERE id = %s RETURNING id; \
+            """
+    params = (description, status, priority, due_date, task_id)
+
+    with db_cursor() as cur:
+        cur.execute(query, params)
+        row = cur.fetchone()
+        if row is None:
+            raise ValueError(f"Task not found: {task_id}")
+        return row[0]
