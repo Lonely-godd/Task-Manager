@@ -36,7 +36,8 @@ if __name__ == "__main__":
                     except Exception as e:
                         print(f"Error: {e}")
                 case "help":
-                    print("Some help")
+                    from app.help_text import HELP_TEXT
+                    print(HELP_TEXT)
                 case "exit":
                     print("Dont worry, your tasks saved local. Goodbye!")
                     raise SystemExit
