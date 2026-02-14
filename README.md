@@ -104,7 +104,9 @@ Allowed statuses:
 Examples:
 
 list
+
 list open
+
 list done
 
 ---
@@ -147,6 +149,7 @@ update <id> status done
 ## System Commands
 
 help — show help message
+
 exit — close application
 
 ---
