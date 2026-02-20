@@ -1,6 +1,6 @@
 from app.db import db_cursor
 from app.cli_parser import parse_line
-
+from app.utils.formatter import format_tasks
 HELP_COMMANDS = {"reset", "init", "help", "exit", "ping"}
 
 if __name__ == "__main__":
@@ -63,8 +63,8 @@ if __name__ == "__main__":
                         from app.services.tasks import get_task
 
                         tasks = get_task(payload)
-                        for t in tasks:
-                            print(t)
+
+                        print(format_tasks(tasks))
                     except Exception as e:
                         print(f"Error: {e}")
                 case "update":
