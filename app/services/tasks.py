@@ -1,18 +1,16 @@
-from prompt_toolkit.validation import ValidationError
-
 from app.repo.tasks import insert_task
 from app.repo.tasks import select_task
 from app.repo.tasks import repo_update_task
+from app.utils.validate_date import validate_due_date
 
 
 def create_task(payload: dict) -> int:
     title = payload.get('title')
     priority = payload.get('priority')
-    due_date = payload.get('due_date')
+    due_date = validate_due_date(payload.get('due_date'))
     description = payload.get('description')
     if not title or not title.strip():
         raise ValueError("Task title cannot be empty")
-
     if priority is not None:
         if not isinstance(priority, int):
             raise ValueError("Priority must be a number")
@@ -43,7 +41,7 @@ def update_task(payload: dict) -> str:
     description = payload.get('description')
     status = payload.get('status')
     priority = payload.get('priority')
-    due_date = payload.get('due_date')
+    due_date = validate_due_date(payload.get("due_date"))
 
     if status is not None and status not in ("open", "done", "archived"):
         raise ValueError("Unknown status filter")
